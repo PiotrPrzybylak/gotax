@@ -33,23 +33,23 @@ func main() {
 		fmt.Println("sroka")
 
 		var podatek float64 = 0
-		if salary < stawki[0].próg {
+		if salary <= stawki[0].próg {
 			podatek = stawki[1].stawka*salary - 1188
 			if podatek < 0 {
 				podatek = 0
 			}
 		}
-		if salary >= stawki[0].próg && salary < stawki[1].próg {
+		if salary > stawki[0].próg && salary <= stawki[1].próg {
 			fmt.Println("zupa")
-			podatek = stawki[1].stawka*salary - 1188 - 631.98*(salary-6600)/4400
+			podatek = stawki[1].stawka*salary - (1188 - 631.98*(salary-6600)/4400)
 		}
-		if salary >= stawki[1].próg && salary < stawki[2].próg {
+		if salary > stawki[1].próg && salary <= stawki[2].próg {
 			podatek = stawki[1].stawka*salary - 556.02
 		}
-		if salary >= stawki[2].próg && salary < stawki[3].próg {
-			podatek = 15395.04 + stawki[3].stawka*salary - (556.02 - 556.02*(salary-85.528)/41472)
+		if salary > stawki[2].próg && salary <= stawki[3].próg {
+			podatek = 15395.04 + stawki[3].stawka*(salary - 85528) - (556.02 - 556.02*(salary - 85528)/41472)
 		}
-		if salary >= stawki[3].próg {
+		if salary > stawki[3].próg {
 			podatek = stawki[3].stawka * salary
 		}
 
