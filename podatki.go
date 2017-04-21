@@ -47,7 +47,7 @@ func main() {
 			podatek = stawki[1].stawka*salary - 556.02
 		}
 		if salary >= stawki[2].próg && salary < stawki[3].próg {
-			podatek = 15395.04 + stawki[3].stawka*salary - 15395.04 - (556.02 - 556.02*(salary-85.528)/41472)
+			podatek = 15395.04 + stawki[3].stawka*salary - (556.02 - 556.02*(salary-85.528)/41472)
 		}
 		if salary >= stawki[3].próg {
 			podatek = stawki[3].stawka * salary
