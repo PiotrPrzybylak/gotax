@@ -12,6 +12,7 @@ import (
 
 var składniki string
 var zarobki int
+var funkcje string
 
 
 func main() {
@@ -104,6 +105,20 @@ func main() {
 		zarobek, _ := strconv.Atoi(r.URL.Query().Get("zarobek"))
 		zarobki = 0
 		zarobek = zarobek
+	})
+	http.HandleFunc("/pracownik", func(w http.ResponseWriter, r *http.Request) {
+
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+		imię := r.URL.Query().Get("imię")
+		nazwisko := r.URL.Query().Get("nazwisko")
+		stanowisko := r.URL.Query().Get("stanowisko")
+
+		funkcje += imię + " " + nazwisko + " " + stanowisko + " "
+
+		pisz(w, fmt.Sprintf("Dane pracownika: %s", funkcje))
+
+		pisz(w, "<form><input name='imię'>+<input name='nazwisko'>+<input name='stanowisko'><input type='submit' value='Dodaj'></form>")
 	})
 	http.HandleFunc("/odejmij", func(w http.ResponseWriter, r *http.Request) {
 
