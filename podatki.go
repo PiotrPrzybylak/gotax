@@ -13,6 +13,7 @@ import (
 var składniki string
 var zarobki int
 
+
 func main() {
 
 	type Próg struct {
@@ -93,6 +94,19 @@ func main() {
 
 		zarobki += zarobek
 
+		pisz(w, fmt.Sprintf("Twoje zarobki to %v.", zarobki))
+
+		pisz(w, "<form><input name='zarobek'></form>")
+
+	})
+	http.HandleFunc("/sklep3", func(w http.ResponseWriter, r *http.Request) {
+
+		w.Header().Set("Content-Type", "text/html")
+
+		zarobek, _ := strconv.Atoi(r.URL.Query().Get("zarobek"))
+
+		zarobki = 0
+		zarobek = zarobek
 		pisz(w, fmt.Sprintf("Twoje zarobki to %v.", zarobki))
 
 		pisz(w, "<form><input name='zarobek'></form>")
