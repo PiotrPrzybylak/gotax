@@ -13,6 +13,7 @@ import (
 var składniki string
 var zarobki int
 var funkcje string
+var dochody int
 
 
 func main() {
@@ -103,8 +104,12 @@ func main() {
 	http.HandleFunc("/sklep3", func(w http.ResponseWriter, r *http.Request) {
 
 		zarobek, _ := strconv.Atoi(r.URL.Query().Get("zarobek"))
+		dochód, _ := strconv.Atoi(r.URL.Query().Get("dochód"))
 		zarobki = 0
+		dochody = 0
+		funkcje = " "
 		zarobek = zarobek
+		dochód = dochód
 	})
 	http.HandleFunc("/pracownik", func(w http.ResponseWriter, r *http.Request) {
 
@@ -113,12 +118,15 @@ func main() {
 		imię := r.URL.Query().Get("imię")
 		nazwisko := r.URL.Query().Get("nazwisko")
 		stanowisko := r.URL.Query().Get("stanowisko")
+		dochód, _ := strconv.Atoi(r.URL.Query().Get("dochód"))
 
 		funkcje += imię + " " + nazwisko + " " + stanowisko + " "
+		dochody += dochód
 
-		pisz(w, fmt.Sprintf("Dane pracownika: %s", funkcje))
+		pisz(w, fmt.Sprintf("Dane pracowników: %s", funkcje))
+		pisz(w, fmt.Sprintf("Dochód pracowników: %v", dochody))
 
-		pisz(w, "<form><input name='imię'>+<input name='nazwisko'>+<input name='stanowisko'><input type='submit' value='Dodaj'></form>")
+		pisz(w, "<form><input name='imię'>+<input name='nazwisko'>+<input name='stanowisko'>+<input name='dochód'><input type='submit' value='Dodaj'></form>")
 	})
 	http.HandleFunc("/odejmij", func(w http.ResponseWriter, r *http.Request) {
 
