@@ -127,7 +127,7 @@ func main() {
 		pisz(w, fmt.Sprintf("Dochód pracowników: %v", dochody))
 
 		pisz(w, "<form><input name='imię'>+<input name='nazwisko'>+<input name='stanowisko'>+<input name='dochód'><input type='submit' value='Dodaj'></form>")
-	})
+	}) 
 	http.HandleFunc("/odejmij", func(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "text/html")
