@@ -8,8 +8,6 @@ import (
 	"strconv"
 )
 
-
-
 var składniki string
 var zarobki int
 var funkcje string
@@ -17,12 +15,23 @@ var dochody int
 
 
 func main() {
-
+	type pracownik struct {
+		pensja   int
+		imię     string
+		nazwisko string
+		zawód    string
+	}
 	type Próg struct {
 		próg   float64
 		stawka float64
 	}
 
+	var pracownicy = []pracownik{
+		{imię: "Jan", nazwisko: "Nowak", zawód: "programista", pensja: 2000},
+		{imię: "Wanda", nazwisko: "Kowal", zawód: "lekarz", pensja: 6000},
+		{imię: "Karol", nazwisko: "Lipski", zawód: "woźny", pensja: 4500},
+		{imię: "Adam", nazwisko: "Koza", zawód: "stajenny", pensja: 5000},
+	}
 	var stawki = []Próg{
 		{stawka: 0, próg: 6600},
 		{stawka: 0.18, próg: 11000},
@@ -80,10 +89,9 @@ func main() {
 
 		składnik := r.URL.Query().Get("składnik")
 
-		składniki += składnik +" "
+		składniki += składnik + " "
 
 		pisz(w, fmt.Sprintf("Twoje składniki to %s.", składniki))
-
 
 		pisz(w, "<form><input name='składnik'></form>")
 
@@ -111,7 +119,7 @@ func main() {
 		zarobek = zarobek
 		dochód = dochód
 	})
-	http.HandleFunc("/pracownik", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/dodaj_pracownika", func(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
@@ -120,14 +128,38 @@ func main() {
 		stanowisko := r.URL.Query().Get("stanowisko")
 		dochód, _ := strconv.Atoi(r.URL.Query().Get("dochód"))
 
+		p := pracownik{imię: imię, nazwisko: nazwisko, zawód: stanowisko, pensja: dochód}
+
+		pracownicy = append(pracownicy, p)
+
 		funkcje += imię + " " + nazwisko + " " + stanowisko + " "
 		dochody += dochód
 
 		pisz(w, fmt.Sprintf("Dane pracowników: %s", funkcje))
 		pisz(w, fmt.Sprintf("Dochód pracowników: %v", dochody))
 
-		pisz(w, "<form><input name='imię'>+<input name='nazwisko'>+<input name='stanowisko'>+<input name='dochód'><input type='submit' value='Dodaj'></form>")
-	}) 
+		pisz(w, "Dodano pracownika!")
+	})
+
+
+	http.HandleFunc("/pracownik_formularz", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		pisz(w, "<form action='dodaj_pracownika'><input name='imię'>+<input name='nazwisko'>+<input name='stanowisko'>+<input name='dochód'><input type='submit' value='Dodaj'></form>")
+	})
+
+
+	http.HandleFunc("/pracownicy", func(w http.ResponseWriter, r *http.Request) {
+
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+		pisz(w, "<table>")
+		for _, pracownik := range pracownicy {
+			pisz(w, fmt.Sprintf("<tr><td>%v</td><td>%v</td><td>%v</td><td>%v</td></tr>", pracownik.imię, pracownik.nazwisko, pracownik.pensja, pracownik.zawód))
+		}
+		pisz(w, "</table>")
+
+	})
+
 	http.HandleFunc("/odejmij", func(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "text/html")
