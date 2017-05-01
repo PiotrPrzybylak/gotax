@@ -111,13 +111,9 @@ func main() {
 	})
 	http.HandleFunc("/sklep3", func(w http.ResponseWriter, r *http.Request) {
 
-		zarobek, _ := strconv.Atoi(r.URL.Query().Get("zarobek"))
-		dochód, _ := strconv.Atoi(r.URL.Query().Get("dochód"))
 		zarobki = 0
 		dochody = 0
-		funkcje = " "
-		zarobek = zarobek
-		dochód = dochód
+		funkcje = ""
 	})
 	http.HandleFunc("/dodaj_pracownika", func(w http.ResponseWriter, r *http.Request) {
 
@@ -151,13 +147,17 @@ func main() {
 	http.HandleFunc("/pracownicy", func(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
+		var sumaDochodów int
 		pisz(w, "<table>")
 		for _, pracownik := range pracownicy {
-			pisz(w, fmt.Sprintf("<tr><td>%v</td><td>%v</td><td>%v</td><td>%v</td></tr>", pracownik.imię, pracownik.nazwisko, pracownik.pensja, pracownik.zawód))
-		}
-		pisz(w, "</table>")
 
+			pisz(w, fmt.Sprintf("<tr><td>%v</td><td>%v</td><td>%v</td><td>%v</td></tr>", pracownik.imię, pracownik.nazwisko, pracownik.pensja, pracownik.zawód))
+
+
+			sumaDochodów += pracownik.pensja
+		}
+			pisz(w, "</table>")
+			pisz(w, fmt.Sprintf("Dochód pracowników: %v", sumaDochodów))
 	})
 
 	http.HandleFunc("/odejmij", func(w http.ResponseWriter, r *http.Request) {
@@ -232,6 +232,9 @@ func main() {
 
 	})
 
+	http.HandleFunc("/costam", costam)
+
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "9999"
@@ -242,4 +245,12 @@ func main() {
 
 func pisz(w http.ResponseWriter, tekst string) {
 	w.Write([]byte(tekst))
+}
+
+
+func costam(w http.ResponseWriter, r *http.Request) {
+
+	pisz(w, "cośtam")
+	dochody =123
+
 }
